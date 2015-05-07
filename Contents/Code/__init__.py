@@ -1,6 +1,6 @@
 ######################################################################################
 #
-#	HDMoviesDownload.Pro - v1
+#	HDMoviesDownload.Pro - v0.20
 #
 ######################################################################################
 
@@ -88,14 +88,18 @@ def ShowCategory(title, category, page_count):
 				thumb = Resource.ContentsOfURLWithFallback(url = thumb, fallback='icon-cover.png')
 				)
 			)
+	try:
+		pagination = page_data.xpath("//a[@class='inactive']")
+		if pagination:
+			oc.add(NextPageObject(
+				key = Callback(ShowCategory, title = category, category = category, page_count = int(page_count) + 1),
+				title = "Next...",
+				thumb = R(ICON_NEXT)
+					)
+				)
+	except:
+		pass
 
-	oc.add(NextPageObject(
-		key = Callback(ShowCategory, title = category, category = category, page_count = int(page_count) + 1),
-		title = "Next...",
-		thumb = R(ICON_NEXT)
-			)
-		)
-	
 	return oc
 
 ######################################################################################
