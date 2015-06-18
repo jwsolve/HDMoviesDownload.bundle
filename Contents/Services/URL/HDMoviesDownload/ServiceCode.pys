@@ -50,6 +50,10 @@ def MediaObjectsForURL(url):
 						)
 					)
 				],
+			video_resolution = 720,
+			bitrate = 1500,
+			container = Container.MP4,
+			video_codec = VideoCodec.H264,
 			optimized_for_streaming = True if Client.Product != 'Plex Web' else False
 			)
 	]
@@ -59,6 +63,7 @@ def MediaObjectsForURL(url):
 def PlayVideo(url, fmt):
 
 	html = HTML.ElementFromURL(url)
+
 	url = html.xpath("//div[@class='video-embed']/iframe/@src")[0]
 
 	url = urlparse.urlparse(url).query
@@ -72,7 +77,6 @@ def PlayVideo(url, fmt):
 	response = urllib2.urlopen(req)
 	link = response.read()
 	response.close()
-
 	video_url = re.compile('source src="(.+?)"').findall(link)[0].split("&")[0]
 
 	return IndirectResponse(VideoClipObject, key = video_url)
