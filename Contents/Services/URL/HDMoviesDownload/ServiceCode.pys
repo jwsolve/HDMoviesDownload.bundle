@@ -1,4 +1,15 @@
 import urllib, urllib2, re, urlparse
+import os
+import sys
+
+try:
+	path = os.getcwd().split("?\\")[1].split('Plug-in Support')[0]+"Plug-ins/HDMoviesDownload.bundle/Contents/Modules"
+except:
+	path = os.getcwd().split("Plug-in Support")[0]+"Plug-ins/HDMoviesDownload.bundle/Contents/Modules"
+if path not in sys.path:
+	sys.path.append(path)
+
+import jsbeautifier
 
 ########################################################################################
 def NormalizeURL(url):
@@ -59,7 +70,6 @@ def MediaObjectsForURL(url):
 	]
 
 ########################################################################################
-@indirect
 def PlayVideo(url, fmt):
 
 	html = HTML.ElementFromURL(url)
@@ -77,6 +87,10 @@ def PlayVideo(url, fmt):
 	response = urllib2.urlopen(req)
 	link = response.read()
 	response.close()
-	video_url = re.compile('source src="(.+?)"').findall(link)[0].split("&")[0]
 
-	return IndirectResponse(VideoClipObject, key = video_url)
+	filekey = Regex('eval([^"]+.*)').search(link).group(0)
+	video_url = jsbeautifier.beautify(filekey)
+	video_url = video_url.replace('$("video").attr("src", "','',1).replace('");','',1)
+
+	return Redirect(video_url)
+

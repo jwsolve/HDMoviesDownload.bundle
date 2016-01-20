@@ -1,6 +1,6 @@
 ######################################################################################
 #
-#	HDMoviesDownload.Pro - v0.20
+#	HDMoviesDownload.Pro - v1
 #
 ######################################################################################
 
@@ -63,7 +63,7 @@ def ShowCategory(title, category, page_count):
 
 	oc = ObjectContainer(title1 = title)
 	if str(page_count) == "1":
-		page_data = HTML.ElementFromURL(CATEGORY_URL + '/' + str(category) + '/?filtre=date')
+		page_data = HTML.ElementFromURL(CATEGORY_URL + '/' + str(category))
 	else:
 		page_data = HTML.ElementFromURL(CATEGORY_URL + '/' + str(category) + '/page/' + str(page_count) + '/')
 
